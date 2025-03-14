@@ -1,6 +1,26 @@
 import { Link } from "react-router-dom";
+import { useEffect, useRef } from "react";
 
 const PostForm = ({ formData, setFormData, handleSubmit, errors, validate }) => {
+
+    const titleRef = useRef(null);
+    const bodyRef = useRef(null);
+    const userIdRef = useRef(null);
+  
+    useEffect(() => {
+      titleRef.current?.focus();
+    }, [])
+  
+    const handleKeyDown = (e, nextRef) => {
+      if (e.key === "Enter") {
+        e.preventDefault()
+        if (nextRef) {
+          nextRef.current.focus()
+        } else {
+          handleSubmit(e)
+        }
+      }
+    };
     
   const handleChange = (e) => {
     const { name, value } = e.target
@@ -17,8 +37,10 @@ const PostForm = ({ formData, setFormData, handleSubmit, errors, validate }) => 
             type="text"
             id="title"
             name="title"
+            ref={titleRef}
             value={formData.title}
             onChange={handleChange}
+            onKeyDown={(e) => handleKeyDown(e, bodyRef)}
             className="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6"
             required
           />
@@ -29,8 +51,10 @@ const PostForm = ({ formData, setFormData, handleSubmit, errors, validate }) => 
           <textarea
             id="body"
             name="body"
+            ref={bodyRef}
             value={formData.body}
             onChange={handleChange}
+            onKeyDown={(e) => handleKeyDown(e, userIdRef)}
             className="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6"
             required
           />
@@ -42,8 +66,10 @@ const PostForm = ({ formData, setFormData, handleSubmit, errors, validate }) => 
             type="number"
             id="userId"
             name="userId"
+            ref={userIdRef}
             value={formData.userId}
             onChange={handleChange}
+            onKeyDown={(e) => handleKeyDown(e, null)}
             className="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6"
             required
           />

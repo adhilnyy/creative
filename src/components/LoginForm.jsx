@@ -1,8 +1,28 @@
 import useLogin from "../hooks/useLogin";
 import Logo from "../assets/logo.png";
+import { useEffect, useRef } from "react";
 
 const LoginForm = () => {
   const { credentials, isLoading, error, handleChange, handleLoginSubmit } = useLogin();
+
+  const usernameRef = useRef(null);
+  const passwordRef = useRef(null);
+
+  useEffect(() => {
+    usernameRef.current?.focus();
+  }, [])
+
+  const handleKeyDown = (e, nextRef) => {
+    if (e.key === "Enter") {
+      e.preventDefault()
+      if (nextRef) {
+        nextRef.current.focus()
+      } else {
+        handleLoginSubmit(e)
+      }
+    }
+  };
+  
 
   return (
     <div className="backdrop-blur-lg bg-white/10 shadow-lg border border-white/20 p-8 rounded-2xl max-w-sm w-full">
@@ -18,10 +38,12 @@ const LoginForm = () => {
           </label>
           <input
             id="username"
+            ref={usernameRef}
             value={credentials.username}
             name="username"
             type="text"
             onChange={handleChange}
+            onKeyDown={(e) => handleKeyDown(e, passwordRef)}
             autoComplete="username"
             placeholder="Enter your username"
             className="w-full mt-1 rounded-lg bg-white/20 backdrop-blur-md px-3 py-2 text-gray-800 placeholder-gray-600 outline-none focus:ring-2 focus:ring-white/50"
@@ -35,10 +57,12 @@ const LoginForm = () => {
           </label>
           <input
             id="password"
+            ref={passwordRef}
             value={credentials.password}
             name="password"
             type="password"
             onChange={handleChange}
+            onKeyDown={(e) => handleKeyDown(e, null)}
             autoComplete="current-password"
             placeholder="Enter your password"
             className="w-full mt-1 rounded-lg bg-white/20 backdrop-blur-md px-3 py-2 text-gray-800 placeholder-gray-600 outline-none focus:ring-2 focus:ring-white/50"
