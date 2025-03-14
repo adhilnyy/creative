@@ -78,7 +78,7 @@ const List = () => {
       });
       if (response.ok) {
         dispatch(deletePost(selectedPost.id));
-        console.log("Post deleted successfully.");
+        dispatch(setMessage("Post deleted successfully."));
       }
     } catch (error) {
       console.error("Error occurred while deleting the post!", error);
