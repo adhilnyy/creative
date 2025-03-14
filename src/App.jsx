@@ -1,11 +1,12 @@
-
-
-import React from 'react'
+import { BrowserRouter as Router } from "react-router-dom"
+import AppRoutes from "./routes/AppRoutes"
 
 const App = () => {
   return (
     <>
-    <h1 className='text-amber-300'>Login</h1>
+    <Router>
+      <AppRoutes />
+    </Router>
     </>
   )
 }
